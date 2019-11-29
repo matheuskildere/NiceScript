@@ -1,0 +1,68 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class LerCsv {
+	int n1;
+	String nomeTabela;
+	public static void main(String[] args) {
+		LerCsv cs = new LerCsv(50,"po");
+		
+	}
+
+	public LerCsv (int n1, String nomeTabela){
+		this.n1 = n1;
+		this.nomeTabela = nomeTabela;
+	}
+	public String devolveString() {
+		String script = "INSERT INTO "+nomeTabela +" VALUES\n";
+		String[] valores = csv();
+		for (int i = 1; i < valores.length; i++) {
+			script += valores[i]+",\n";
+		}
+		return script;
+	}
+
+	public String[] csv() {
+		int contador = 0;
+		String arquivoCSV = "K:\\Faculdade\\Banco de Dados\\Trabalho\\NiceScript\\tabela.csv";
+	    BufferedReader br = null;
+		String linha = "";
+		String csvDivisor = ";";
+	    String script[];
+	    
+	    try {
+	    	int tamanho= 0;
+	    	while ((linha = br.readLine()) != null) {
+	    		
+	    	}
+			br = new BufferedReader(new FileReader(arquivoCSV));
+			//script=new String[500];
+			//System.out.println(script.length);
+			while ((linha = br.readLine()) != null) {
+				
+	            String[] coluna = linha.split(csvDivisor);
+				script[contador] = "("+coluna[n1].replace("\"", "")+")";
+				//script[contador] = "("+coluna[1].replace("\"", "")+",'"+coluna[0].replace("\"", "")+"' ),\n";
+	            //toda += coluna[0].replace("\"", "") +"\n";
+				contador+=1;
+	        }
+
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (br != null) {
+	            try {
+	                br.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+		}
+		return script;
+	  }
+	
+}

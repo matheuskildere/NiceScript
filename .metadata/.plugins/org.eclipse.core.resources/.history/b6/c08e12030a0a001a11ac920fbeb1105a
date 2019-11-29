@@ -1,0 +1,89 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class LerCsv {
+	int n1;
+	String nomeTabela;
+	String diretorio;
+	String[] valores;
+
+	public LerCsv (int n1, String nomeTabela, String diretorio){
+		this.n1 = n1;
+		this.nomeTabela = nomeTabela;
+		this.diretorio = diretorio;
+		valores = csv();
+		removeRepetidas();
+	}
+	
+	public String devolveString() {
+		String script = "INSERT INTO "+nomeTabela +" VALUES\n";
+		for (int i = 1; i < valores.length; i++) {
+			script += valores[i]+",\n";
+		}
+		script = script.substring(0, script.length() -2);
+		script += ";";
+		return script;
+	}
+	
+	public void removeRepetidas() {
+		for (int i = 0; i < valores.length; i++) {
+			for (int j = 0; j < valores.length; j++) {
+				if (valores[i].equals(valores[j])) {
+					valores[j] = null;
+				}
+			}
+		}
+		
+	}
+
+	public String[] csv() {
+		int contador = 0;
+		String arquivoCSV = diretorio;
+	    BufferedReader br = null;
+		String linha = "";
+		String csvDivisor = ";";
+	    String script[] = null;
+	    int tamanho= 0;
+	    try {
+	    	br = new BufferedReader(new FileReader(arquivoCSV));
+	    	while ((linha = br.readLine()) != null) {
+	    	tamanho+= 1;
+	    	}
+	    } catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			
+		}
+	    try {
+	    	
+	    	br = new BufferedReader(new FileReader(arquivoCSV));
+			script=new String[tamanho];
+			while ((linha = br.readLine()) != null) {
+	            String[] coluna = linha.split(csvDivisor);
+				script[contador] = "("+coluna[n1].replace("\"", "")+")";
+				//script[contador] = "("+coluna[1].replace("\"", "")+",'"+coluna[0].replace("\"", "")+"' ),\n";
+	            //toda += coluna[0].replace("\"", "") +"\n";
+				contador+=1;
+	        }
+
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (br != null) {
+	            try {
+	                br.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+		}
+		return script;
+	  }
+	
+}

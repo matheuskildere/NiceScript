@@ -1,0 +1,56 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class LerCsv {
+	public static void main(String[] args) {
+		LerCsv cs = new LerCsv(50,2);
+		
+	}
+
+	public LerCsv (int n1, int n2){
+		for (int i = 0; i < Csv(n1, n2).length; i++) {
+			System.out.println(Csv(n1, n2)[i]);
+		}
+	}
+
+	public String[] Csv(int n1,int n2) {
+		int contador = 1;
+		String toda = "";
+		String arquivoCSV = "K:\\Faculdade\\Banco de Dados\\Trabalho\\NiceScript\\tabela.csv";
+	    BufferedReader br = null;
+		String linha = "";
+		String csvDivisor = ";";
+	    String script[] = null;
+	    try {
+
+			br = new BufferedReader(new FileReader(arquivoCSV));
+			script=new String[br.read()];
+			script[0]="INSERT INTO bolsista VALUES\n";
+	        while ((linha = br.readLine()) != null) {
+				
+	            String[] coluna = linha.split(csvDivisor);
+				script[contador] = "("+coluna[n2].replace("\"", "")+")";
+				//script[contador] = "("+coluna[1].replace("\"", "")+",'"+coluna[0].replace("\"", "")+"' ),\n";
+	            //toda += coluna[0].replace("\"", "") +"\n";
+				contador+=1;
+	        }
+
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (br != null) {
+	            try {
+	                br.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+		}
+		return script;
+	  }
+	
+}

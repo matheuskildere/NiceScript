@@ -1,0 +1,10 @@
+import java.io.BufferedReader;
+
+public class LerCsv {
+	public void Csv() {
+		String arquivoCSV = "arquivo.csv";
+	    BufferedReader br = null;
+	    String linha = "";
+	    String csvDivisor = ",";
+	}
+}
